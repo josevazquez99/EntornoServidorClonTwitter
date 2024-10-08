@@ -6,7 +6,7 @@
     <title>Login</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel='stylesheet' type='text/css' media='screen' href='./css/main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./css/index.css'>
 </head>
 <body>
     <div class="login-container">
@@ -15,7 +15,7 @@
         
         <h1>Inicia sesión en Twitter</h1>
 
-        <form action="../login/login.php" method="POST">
+        <form action="./login/login.php" method="POST">
             <div class="form-group">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario" required />
             </div>

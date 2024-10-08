@@ -1,12 +1,12 @@
 <?php 
-
-if (isset($_POST)) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     session_start();
     require_once "../CRUD/connection.php";
     $connect = connection();
 
-    $username = trim($_POST["username"]);
-    $pass = $_POST["password"];
+    // Verifica si las claves existen en $_POST
+    $username = isset($_POST["username"]) ? trim($_POST["username"]) : '';
+    $pass = isset($_POST["password"]) ? $_POST["password"] : '';
     
     $sql = "SELECT * FROM users WHERE username = '$username'";
     $res = mysqli_query($connect, $sql);
@@ -18,13 +18,16 @@ if (isset($_POST)) {
             $_SESSION["usuario"] = $usuario["username"];
             $_SESSION["id"] = $usuario["id"];
             header("Location: ../main/main.php");
+            exit(); // Asegúrate de salir después de redirigir
         } else {
             // Mensaje de error si la contraseña no coincide
             header("Location: ../error/error.php?error=contraseña_incorrecta");
+            exit();
         }
     } else {
-        // Mensaje de error si el usuario no existe
-        header("Location: ../error/error.php?error=usuario_inexistente");
+        // Manejo de usuario no encontrado (opcional)
+        header("Location: ../error/error.php?error=usuario_no_encontrado");
+        exit();
     }
 }
 ?>
