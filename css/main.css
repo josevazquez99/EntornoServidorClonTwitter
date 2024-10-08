@@ -1,13 +1,16 @@
-body {
-    background-color: #f8f9fa;
-}
-.container {
-    margin-top: 20px;
+.tweet-box {
+    font-size: 16px;
+    padding: 10px;
 }
 .tweet {
-    background: white;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.navbar {
+    background-color: #1DA1F2; /* Color similar al de Twitter */
+}
+.navbar .nav-link {
+    color: white !important;
+}
+.navbar .navbar-brand img {
+    height: 40px;
 }

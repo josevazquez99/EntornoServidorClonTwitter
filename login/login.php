@@ -18,14 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["usuario"] = $usuario["username"];
             $_SESSION["id"] = $usuario["id"];
             header("Location: ../main/main.php");
-            exit(); // Asegúrate de salir después de redirigir
+            exit(); 
         } else {
             // Mensaje de error si la contraseña no coincide
             header("Location: ../error/error.php?error=contraseña_incorrecta");
             exit();
         }
     } else {
-        // Manejo de usuario no encontrado (opcional)
         header("Location: ../error/error.php?error=usuario_no_encontrado");
         exit();
     }
