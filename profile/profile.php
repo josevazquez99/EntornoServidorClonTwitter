@@ -24,8 +24,8 @@ if (!$user) {
 // Verificamos si el usuario logueado está siguiendo al perfil
 $is_following = false;
 if (isset($_SESSION['id'])) {
-    $current_user_id = $_SESSION['id'];
-    $sql_following = "SELECT * FROM follows WHERE users_id = $current_user_id AND userToFollowId = $user_id";
+    $user_id_actual = $_SESSION['id'];
+    $sql_following = "SELECT * FROM follows WHERE users_id = $user_id_actual AND userToFollowId = $user_id";
     $res_following = mysqli_query($connect, $sql_following);
     $is_following = mysqli_num_rows($res_following) > 0;
 }
@@ -34,12 +34,12 @@ if (isset($_SESSION['id'])) {
 if (isset($_POST['follow'])) {
     if ($is_following) {
         // Dejar de seguir
-        $sql_unfollow = "DELETE FROM follows WHERE users_id = $current_user_id AND userToFollowId = $user_id";
+        $sql_unfollow = "DELETE FROM follows WHERE users_id = $user_id_actual AND userToFollowId = $user_id";
         mysqli_query($connect, $sql_unfollow);
         $is_following = false;
     } else {
         // Seguir
-        $sql_follow = "INSERT INTO follows (users_id, userToFollowId) VALUES ($current_user_id, $user_id)";
+        $sql_follow = "INSERT INTO follows (users_id, userToFollowId) VALUES ($user_id_actual, $user_id)";
         mysqli_query($connect, $sql_follow);
         $is_following = true;
     }
