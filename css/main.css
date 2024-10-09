@@ -1,0 +1,16 @@
+.tweet-box {
+    font-size: 16px;
+    padding: 10px;
+}
+.tweet {
+    margin-bottom: 20px;
+}
+.navbar {
+    background-color: #1DA1F2; /* Color similar al de Twitter */
+}
+.navbar .nav-link {
+    color: white !important;
+}
+.navbar .navbar-brand img {
+    height: 40px;
+}

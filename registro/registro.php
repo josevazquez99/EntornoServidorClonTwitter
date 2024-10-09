@@ -1,0 +1,35 @@
+<?php
+if (isset($_POST["submit"])) {
+    require_once("../CRUD/connection.php");
+
+    $connect = connection();
+
+    $username = mysqli_real_escape_string($connect, $_POST["username"]);
+    $password = mysqli_real_escape_string($connect, $_POST["password"]);
+    $email = mysqli_real_escape_string($connect, $_POST["email"]);
+    $description = mysqli_real_escape_string($connect, $_POST["description"]);
+    $createDate = mysqli_real_escape_string($connect, $_POST["createDate"]);
+
+    // Verificar si el usuario ya existe
+    $checkUserSql = "SELECT * FROM users WHERE username='$username' OR email='$email'";
+    $checkUserResult = mysqli_query($connect, $checkUserSql);
+
+    if (mysqli_num_rows($checkUserResult) > 0) {
+        // Usuario o correo ya registrado
+        header("Location: ../error/error.php?error=usuario_existente");
+        exit();
+    }
+
+    if ($username && $username !== "" && $password && $password !== "") {
+        $pass = password_hash($password, PASSWORD_BCRYPT, ["cost" => 4]);
+        $sql = "INSERT INTO users VALUES(null, '$username','$email', '$pass','$description','$createDate');";
+        $guardar = mysqli_query($connect, $sql);
+
+        if ($guardar) {
+            header("Location: ../index.php");
+        } else {
+            header("Location: ../error/error.php");
+        }
+    }
+}
+?>
