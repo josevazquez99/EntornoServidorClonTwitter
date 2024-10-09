@@ -35,8 +35,8 @@
         
         <div class="d-flex justify-content-between mt-3">
             <?php if (isset($_SESSION['id']) && $_SESSION['id'] == $user['id']): ?>
-                <a href="../updateDescription/update_view.php" class="btn btn-outline-primary">Editar descripción</a>
-            <?php else: ?>
+                <a href="../updateDescription/update_view.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-primary">Editar descripción</a>
+                <?php else: ?>
                 <form action="profile.php?id=<?php echo $user['id']; ?>" method="POST" class="d-inline">
                     <button type="submit" name="follow" class="btn btn-outline-<?php echo $is_following ? 'danger' : 'primary'; ?>">
                         <?php echo $is_following ? 'Dejar de seguir' : 'Seguir'; ?>

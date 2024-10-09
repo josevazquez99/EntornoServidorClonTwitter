@@ -3,7 +3,6 @@ session_start();
 require_once "../CRUD/connection.php";
 $connect = connection();
 
-// Verificamos si se ha proporcionado un ID de usuario
 if (!isset($_GET['id'])) {
     header("Location: ../main/main.php");
     exit();

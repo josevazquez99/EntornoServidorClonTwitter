@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="register-container">
-        <!-- Logo de Twitter (o cualquier logo que prefieras) -->
+        <!-- Logo de Twitter-->
         <img src="https://abs.twimg.com/icons/apple-touch-icon-192x192.png" alt="Twitter Logo" width="50" height="50">
         
         <h1>Crea tu cuenta</h1>
@@ -21,7 +21,7 @@
             <div class="alert alert-danger" role="alert">
                 <?php 
                 echo $_SESSION['error']; 
-                unset($_SESSION['error']); // Limpiar el mensaje después de mostrarlo
+                unset($_SESSION['error']); 
                 ?>
             </div>
         <?php endif; ?>

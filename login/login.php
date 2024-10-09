@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['error'] = 'Error: Usuario no encontrado.';
     }
 
-    // Redirigir de nuevo a la página de inicio de sesión
+    // Redirigimos de nuevo a la página de inicio de sesión
     header("Location: ../index.php");
     exit();
 }
