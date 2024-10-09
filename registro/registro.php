@@ -1,7 +1,8 @@
 <?php
+session_start(); // Asegúrate de que la sesión esté iniciada
+
 if (isset($_POST["submit"])) {
     require_once("../CRUD/connection.php");
-
     $connect = connection();
 
     $username = mysqli_real_escape_string($connect, $_POST["username"]);
@@ -10,13 +11,12 @@ if (isset($_POST["submit"])) {
     $description = mysqli_real_escape_string($connect, $_POST["description"]);
     $createDate = mysqli_real_escape_string($connect, $_POST["createDate"]);
 
-    // Verificar si el usuario ya existe
     $checkUserSql = "SELECT * FROM users WHERE username='$username' OR email='$email'";
     $checkUserResult = mysqli_query($connect, $checkUserSql);
 
     if (mysqli_num_rows($checkUserResult) > 0) {
-        // Usuario o correo ya registrado
-        header("Location: ../error/error.php?error=usuario_existente");
+        $_SESSION['error'] = 'Error: El usuario o el correo electrónico ya están registrados.'; 
+        header("Location: ./registro.php"); 
         exit();
     }
 
@@ -27,8 +27,11 @@ if (isset($_POST["submit"])) {
 
         if ($guardar) {
             header("Location: ../index.php");
+            exit();
         } else {
-            header("Location: ../error/error.php");
+            $_SESSION['error'] = 'Error: No se pudo guardar el usuario.'; 
+            header("Location: ./registro.php");
+            exit();
         }
     }
 }
