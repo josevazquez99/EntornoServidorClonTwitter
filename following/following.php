@@ -4,13 +4,11 @@ session_start();
 require_once("../CRUD/connection.php");
 $con = connection();
 
-// Verificar que el usuario esté autenticado y $user_id esté definido
 if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id']; 
 
     $user_id = mysqli_real_escape_string($con, $user_id);
 
-    // Consulta corregida para obtener los usuarios que el usuario está siguiendo
     $sql = "SELECT u.username, u.email, u.description
             FROM follows f
             INNER JOIN users u ON f.userToFollowId = u.id 

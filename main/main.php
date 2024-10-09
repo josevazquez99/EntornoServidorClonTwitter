@@ -27,14 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->close();
     }
 }
-// Mostrar los tweets de las personas que sigue o todos los tweets
+// Mostramos los tweets de las personas que sigue o todos los tweets
 $show_all = isset($_GET['show_all']) ? true : false;
 
 if ($show_all) {
-    // Obtener todos los tweets de todos los usuarios
+    // Obtenemos todos los tweets de todos los usuarios
     $sql_tweets = "SELECT p.*, u.username FROM publications p INNER JOIN users u ON p.userId = u.id ORDER BY p.createDate DESC";
 } else {
-    // Obtener los tweets de las personas que sigue el usuario
+    // Obtenemos los tweets de las personas que sigue el usuario
     $sql_tweets = "SELECT p.*, u.username FROM follows f
                    INNER JOIN publications p ON f.userToFollowId = p.userId
                    INNER JOIN users u ON p.userId = u.id

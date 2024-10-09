@@ -1,5 +1,5 @@
 <?php
-session_start(); // Asegúrate de que la sesión esté iniciada
+session_start(); 
 
 if (isset($_POST["submit"])) {
     require_once("../CRUD/connection.php");
