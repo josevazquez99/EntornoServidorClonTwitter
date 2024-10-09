@@ -1,13 +1,13 @@
-<?php 
+<?php
+session_start(); 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    session_start();
     require_once "../CRUD/connection.php";
     $connect = connection();
 
-    // Verifica si las claves existen en $_POST
     $username = isset($_POST["username"]) ? trim($_POST["username"]) : '';
     $pass = isset($_POST["password"]) ? $_POST["password"] : '';
-    
+
     $sql = "SELECT * FROM users WHERE username = '$username'";
     $res = mysqli_query($connect, $sql);
 
@@ -21,12 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit(); 
         } else {
             // Mensaje de error si la contraseña no coincide
-            header("Location: ../error/error.php?error=contraseña_incorrecta");
-            exit();
+            $_SESSION['error'] = 'Error: Contraseña incorrecta.';
         }
     } else {
-        header("Location: ../error/error.php?error=usuario_no_encontrado");
-        exit();
+        $_SESSION['error'] = 'Error: Usuario no encontrado.';
     }
+
+    // Redirigir de nuevo a la página de inicio de sesión
+    header("Location: ../index.php");
+    exit();
 }
 ?>

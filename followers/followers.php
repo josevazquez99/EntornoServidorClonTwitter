@@ -1,24 +1,24 @@
 <?php
+session_start(); 
 
-function connection(){
-    $host = "localhost:3306";
-    $user = "root";
-    $pass = "root";
-
-    $bd = "social_network";
-
-    $connect=mysqli_connect($host, $user, $pass);
-
-    mysqli_select_db($connect, $bd);
-
-    return $connect;
-}
-
+require_once("../CRUD/connection.php");
 $con = connection();
 
-$sql = "";
-$query = mysqli_query($con, $sql);
+// Verificar que el usuario esté autenticado y $user_id esté definido
+if (isset($_SESSION['id'])) {
+    $user_id = $_SESSION['id']; 
 
+    $user_id = mysqli_real_escape_string($con, $user_id);
+
+    $sql = "SELECT u.username, u.email, u.description
+            FROM users u
+            JOIN follows f ON u.id = f.userToFollowId
+            WHERE f.users_id = $user_id;";
+
+    $query = mysqli_query($con, $sql);
+} else {
+    $error_message = "No estás autenticado. Por favor inicia sesión.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,44 +26,49 @@ $query = mysqli_query($con, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siguiendo</title>
+    <title>Seguidores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        body {
+            background-color: #f8f9fa; 
         }
-        table, th, td {
-            border: 1px solid black;
+        .card {
+            border: none; 
+            border-radius: 10px; 
+            transition: transform 0.2s; 
         }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
+        .card:hover {
+            transform: scale(1.05); 
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = mysqli_fetch_array($query)): ?>
-                    <tr>
-                        <td><?= $row['Id'] ?></td>
-                        <td><?= $row['Username'] ?></td>
-                        <td><?= $row['Email'] ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Seguidores</h1>
+
+        <?php if (isset($error_message)): ?>
+            <div class='alert alert-warning' role='alert'><?php echo $error_message; ?></div>
+        <?php else: ?>
+            <div class="row"> 
+                <?php
+                if (!$query) {
+                    echo "<div class='alert alert-danger' role='alert'>Error en la consulta: " . mysqli_error($con) . "</div>";
+                } else {
+                    while ($row = mysqli_fetch_assoc($query)) {
+                        echo "<div class='col-md-4'>"; 
+                        echo "<div class='card mb-4 shadow-sm'>"; 
+                        echo "<div class='card-body'>";
+                        echo "<h5 class='card-title'>" . htmlspecialchars($row['username']) . "</h5>";
+                        echo "<h6 class='card-subtitle mb-2 text-muted'>" . htmlspecialchars($row['email']) . "</h6>";
+                        echo "<p class='card-text'>" . htmlspecialchars($row['description']) . "</p>";
+                        echo "</div>"; 
+                        echo "</div>"; 
+                        echo "</div>"; 
+                    }
+                }
+                ?>
+            </div> 
+        <?php endif; ?>
+    </div> 
 </body>
 </html>

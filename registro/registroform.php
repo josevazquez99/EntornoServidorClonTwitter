@@ -15,7 +15,18 @@
         
         <h1>Crea tu cuenta</h1>
 
-        <form action="../registro/registro.php" method="POST">
+        <!-- Mensajes de alerta (éxito o error) -->
+        <?php 
+        if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php 
+                echo $_SESSION['error']; 
+                unset($_SESSION['error']); // Limpiar el mensaje después de mostrarlo
+                ?>
+            </div>
+        <?php endif; ?>
+
+        <form action="./registro.php" method="POST">
             <div class="form-group">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario" required />
             </div>
