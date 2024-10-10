@@ -40,7 +40,7 @@
         </form>
 
         <div class="register-link">
-            <a href="./registro/registroform.php">¿No tienes cuenta? Regístrate</a>
+            <a href="./registro/registro.php">¿No tienes cuenta? Regístrate</a>
         </div>
     </div>
 

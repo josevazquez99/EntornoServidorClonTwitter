@@ -9,10 +9,11 @@ if (isset($_SESSION['id'])) {
 
     $user_id = mysqli_real_escape_string($con, $user_id);
 
+    // Obtener los usuarios a los que sigue el usuario actual
     $sql = "SELECT u.username, u.email, u.description
-            FROM follows f
-            INNER JOIN users u ON f.userToFollowId = u.id 
-            WHERE f.users_id = $user_id;";
+            FROM users u
+            JOIN follows f ON u.id = f.userToFollowId
+            WHERE f.users_id = $user_id;";  // El usuario actual sigue a otros usuarios
 
     $query = mysqli_query($con, $sql);
 } else {
