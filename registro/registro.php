@@ -4,33 +4,37 @@ session_start();
 $error = ''; // Variable para almacenar errores
 
 if (isset($_POST["submit"])) {
-    require_once("../CRUD/connection.php");
-    $connect = connection();
+    try {
+        require_once("../CRUD/connection.php");
+        $connect = connection();
 
-    $username = mysqli_real_escape_string($connect, $_POST["username"]);
-    $password = mysqli_real_escape_string($connect, $_POST["password"]);
-    $email = mysqli_real_escape_string($connect, $_POST["email"]);
-    $description = mysqli_real_escape_string($connect, $_POST["description"]);
-    $createDate = mysqli_real_escape_string($connect, $_POST["createDate"]);
+        $username = mysqli_real_escape_string($connect, $_POST["username"]);
+        $password = mysqli_real_escape_string($connect, $_POST["password"]);
+        $email = mysqli_real_escape_string($connect, $_POST["email"]);
+        $description = mysqli_real_escape_string($connect, $_POST["description"]);
+        $createDate = mysqli_real_escape_string($connect, $_POST["createDate"]);
 
-    // Verificar si el usuario o el email ya existen
-    $checkUserSql = "SELECT * FROM users WHERE username='$username' OR email='$email'";
-    $checkUserResult = mysqli_query($connect, $checkUserSql);
+        // Verificamos si el usuario o el email ya existen
+        $checkUserSql = "SELECT * FROM users WHERE username='$username' OR email='$email'";
+        $checkUserResult = mysqli_query($connect, $checkUserSql);
 
-    if (mysqli_num_rows($checkUserResult) > 0) {
-        $error = 'Error: El usuario o el correo electrónico ya están registrados.';
-    } else if ($username && $username !== "" && $password && $password !== "") {
-        // Encriptar contraseña
-        $pass = password_hash($password, PASSWORD_BCRYPT, ["cost" => 4]);
-        $sql = "INSERT INTO users VALUES(null, '$username','$email', '$pass','$description','$createDate');";
-        $guardar = mysqli_query($connect, $sql);
+        if (mysqli_num_rows($checkUserResult) > 0) {
+            $error = 'Error: El usuario o el correo electrónico ya están registrados.';
+        } else if ($username && $username !== "" && $password && $password !== "") {
+            // Encriptamos la  contraseña
+            $pass = password_hash($password, PASSWORD_BCRYPT, ["cost" => 4]);
+            $sql = "INSERT INTO users VALUES(null, '$username','$email', '$pass','$description','$createDate');";
+            $guardar = mysqli_query($connect, $sql);
 
-        if ($guardar) {
-            header("Location: ../index.php");
-            exit();
-        } else {
-            $error = 'Error: No se pudo guardar el usuario.';
+            if ($guardar) {
+                header("Location: ../index.php");
+                exit();
+            } else {
+                throw new Exception('Error: No se pudo guardar el usuario.');
+            }
         }
+    } catch (Exception $e) {
+        $error = $e->getMessage();
     }
 }
 ?>
@@ -41,13 +45,11 @@ if (isset($_POST["submit"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel='stylesheet' type='text/css' media='screen' href='../css/registro.css'>
 </head>
 <body>
     <div class="register-container">
-        <!-- Logo de Twitter -->
         <img src="https://abs.twimg.com/icons/apple-touch-icon-192x192.png" alt="Twitter Logo" width="50" height="50">
         
         <h1>Crea tu cuenta</h1>
@@ -84,7 +86,6 @@ if (isset($_POST["submit"])) {
         </form>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
