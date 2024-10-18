@@ -8,6 +8,7 @@ $con = connection();
 if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id']; 
 
+    // Evitar inyecciones SQL
     $user_id = mysqli_real_escape_string($con, $user_id);
 
     // Obtener los usuarios que siguen al usuario actual (seguidores)
@@ -15,8 +16,18 @@ if (isset($_SESSION['id'])) {
             FROM users u
             JOIN follows f ON u.id = f.users_id
             WHERE f.userToFollowId = $user_id;";  // El usuario actual es seguido por otros
-
     $query = mysqli_query($con, $sql);
+
+    // Consulta para contar el número total de seguidores
+    $count_sql = "SELECT COUNT(*) as follower_count
+                  FROM follows
+                  WHERE userToFollowId = $user_id;";
+    $count_query = mysqli_query($con, $count_sql);
+    $follower_count = 0;
+    if ($count_query) {
+        $count_result = mysqli_fetch_assoc($count_query);
+        $follower_count = $count_result['follower_count'];
+    }
 } else {
     $error_message = "No estás autenticado. Por favor inicia sesión.";
 }
@@ -45,7 +56,7 @@ if (isset($_SESSION['id'])) {
 </head>
 <body>
     <div class="container mt-4">
-        <h1 class="text-center mb-4">Seguidores</h1>
+        <h1 class="text-center mb-4">Seguidores (<?php echo $follower_count; ?>)</h1> <!-- Mostra la cantidad de seguidores -->
 
         <?php if (isset($error_message)): ?>
             <div class='alert alert-warning' role='alert'><?php echo $error_message; ?></div>

@@ -68,8 +68,8 @@
                 <h5>Opciones</h5>
                 <div class="btn-group-vertical w-100">
                     <a href="../session/logout.php" class="btn btn-danger">Cerrar sesión</a>
-                    <a href="../followers/followers.php" class="btn btn-outline-secondary">Seguidores</a>
-                    <a href="../following/following.php" class="btn btn-outline-secondary">Siguiendo</a>
+                    <a href="../followers/followers.php" class="btn btn-outline-secondary">Seguidores (<?php echo $follower_count; ?>)</a>
+                    <a href="../following/following.php" class="btn btn-outline-secondary">Siguiendo (<?php echo $following_count; ?>)</a>
                 </div>
             </div>
         </div>
